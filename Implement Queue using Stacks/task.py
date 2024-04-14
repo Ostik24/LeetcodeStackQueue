@@ -52,13 +52,19 @@ class MyQueue:
     def pop(self) -> int:
         while not self.enqueue.is_empty():
             self.dequeue.push(self.enqueue.pop())
+        popped = self.dequeue.pop()
 
-        return self.dequeue.pop()
+        while not self.dequeue.is_empty():
+            self.enqueue.push(self.dequeue.pop())
+        return popped
 
     def peek(self) -> int:
         while not self.enqueue.is_empty():
             self.dequeue.push(self.enqueue.pop())
-        return self.dequeue.peek
+        peekk =  self.dequeue.peek
+        while not self.dequeue.is_empty():
+            self.enqueue.push(self.dequeue.pop())
+        return peekk
 
     def empty(self) -> bool:
         return self.enqueue.is_empty() and self.dequeue.is_empty()
@@ -66,9 +72,28 @@ class MyQueue:
 myQueue = MyQueue()
 myQueue.push(1) #queue is: [1]
 print(myQueue.enqueue)
-myQueue.push(2) #queue is: [1, 2] (leftmost is front of the queue)
+myQueue.push(2)
+print(myQueue.enqueue) #queue is: [1, 2] (leftmost is front of the queue)
+myQueue.push(3)
 print(myQueue.enqueue)
-assert myQueue.peek() == 1, myQueue.peek() #return 1
+myQueue.push(4)
 print(myQueue.enqueue)
-assert myQueue.pop() == 1, myQueue.pop() #return 1, queue is [2]
-myQueue.empty() #return false
+myQueue.pop()
+print(myQueue.enqueue)
+myQueue.push(5)
+print(myQueue.enqueue)
+myQueue.pop()
+print(myQueue.dequeue)
+myQueue.pop()
+print(myQueue.enqueue)
+myQueue.pop()
+print(myQueue.enqueue)
+myQueue.pop()
+print(myQueue.enqueue)
+# assert myQueue.peek() == 1, myQueue.peek() #return 1
+# print(myQueue.enqueue)
+# assert myQueue.pop() == 1, myQueue.pop() #return 1, queue is [2]
+# myQueue.empty() #return false
+
+# ["MyQueue","push","push","push","push","pop","push","pop","pop","pop","pop"]
+# [[],[1],[2],[3],[4]   ,[pop],  [5],[],[],[],[]]
